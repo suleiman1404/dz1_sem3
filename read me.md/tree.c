@@ -17,7 +17,7 @@ void push(node_t** head, int point1, int point2) {
 }
 
 void print_to_file(node_t* head, FILE* file) {
-    fprintf(file, "ГРАФ {\n");
+    fprintf(file, "graph {\n");
     while(head != NULL) {
         fprintf(file, "%d", head->point1);
         if(head->point2 != 0) {
@@ -145,6 +145,15 @@ int point_counter(node_t* head) {
     return k;
 }
 
+int connectivity_check(int v, int e, node_t* head) {
+    if(loops_counter(head) || multiple_edges_counter(head) != 0) {
+        return -2;
+    } else if(e > (v-1)*(v-2)*0.5) {
+        return 1;
+    } else 
+        return -1;
+}
+
 int main(void)
 {
     node_t* head = NULL;
@@ -168,6 +177,15 @@ int main(void)
     printf("points = %d\n", point_counter(head));
     printf("Loops = %d\n", loops_counter(head));
     printf("Multiple edges = %d\n\n", multiple_edges_counter(head));
-
+    int j=connectivity_check(point_counter(head), edge_counter(head), head );
+    if (j == -2){
+    printf("There are multiple edges");
+    }
+    else if(j==-1){
+        printf("Graph disconected");
+    }
+    else if(j==1){
+        printf("Graph connected");
+    }
     return 0;
 }
