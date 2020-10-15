@@ -2,16 +2,16 @@
 #include <stdlib.h>
 
 typedef struct node {
-    int vertice1;
-    int vertice2;
+    int point1;
+    int point2;
     struct node* next;
 } node_t;
 
-void push(node_t** head, int vertice1, int vertice2) {
+void push(node_t** head, int point1, int point2) {
     node_t* tmp = (node_t*)calloc(sizeof(node_t), 1);
     if(tmp == NULL) return;
-    tmp->vertice1 = vertice1;
-    tmp->vertice2 = vertice2;
+    tmp->point1 = point1;
+    tmp->point2 = point2;
     tmp->next = (*head);
     (*head) = tmp;
 }
@@ -19,10 +19,10 @@ void push(node_t** head, int vertice1, int vertice2) {
 void print_to_file(node_t* head, FILE* file) {
     fprintf(file, "ГРАФ {\n");
     while(head != NULL) {
-        fprintf(file, "%d", head->vertice1);
-        if(head->vertice2 != 0) {
+        fprintf(file, "%d", head->point1);
+        if(head->point2 != 0) {
             fprintf(file, " -- ");
-            fprintf(file, "%d", head->vertice2);
+            fprintf(file, "%d", head->point2);
         }
         fprintf(file, ";\n");
         head = head->next;
@@ -70,7 +70,7 @@ void add_edges(node_t** head) {
 int loops_counter(node_t* head) {
     int l = 0;
     while(head != NULL) {
-        if(head->vertice1 == head->vertice2) l++;
+        if(head->point1 == head->point2) l++;
         head = head->next;
     }
     return l;
@@ -80,15 +80,15 @@ int multiple_edges_counter(node_t* head) {
     node_t* tmp = head;
     int n = 0;
     while (head != NULL) {
-        if(head->vertice2 != 0) n++;
+        if(head->point2 != 0) n++;
         head = head->next;
     }
     
     int arr[2][n];
     int i = 0;
     while(tmp != NULL) {
-        arr[0][i] = tmp->vertice1;
-        arr[1][i] = tmp->vertice2;
+        arr[0][i] = tmp->point1;
+        arr[1][i] = tmp->point2;
         i++;
         tmp = tmp->next;
     }
@@ -110,7 +110,7 @@ int multiple_edges_counter(node_t* head) {
 int edge_counter(node_t* head) {
     int n = 0;
     while(head != NULL) {
-        if(head->vertice2 != 0) {
+        if(head->point2 != 0) {
             n++;
         }
         head = head->next;
@@ -118,7 +118,7 @@ int edge_counter(node_t* head) {
     return n;
 }
 
-int vertice_counter(node_t* head) {
+int point_counter(node_t* head) {
     int n = 0;
     node_t* tmp = head;
     while(head != NULL) {
@@ -127,8 +127,8 @@ int vertice_counter(node_t* head) {
     }
     int arr[n*2];
     for(int i = 0; i < n*2; i = i + 2) {
-        arr[i] = tmp->vertice1;
-        arr[i+1] = tmp->vertice2;
+        arr[i] = tmp->point1;
+        arr[i+1] = tmp->point2;
         tmp = tmp->next;
     }
     for(int i = 0; i < n*2 - 1; i++) {
@@ -165,7 +165,7 @@ int main(void)
     fclose(file);
 
     printf("\nEdges = %d\n", edge_counter(head));
-    printf("Vertices = %d\n", vertice_counter(head));
+    printf("points = %d\n", point_counter(head));
     printf("Loops = %d\n", loops_counter(head));
     printf("Multiple edges = %d\n\n", multiple_edges_counter(head));
 
